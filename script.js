@@ -72,37 +72,7 @@ function initAutocomplete() {
 
 window.initAutocomplete = initAutocomplete;
 
-// ===============================
-// FORM SUBMIT LOADING + REDIRECT
-// ===============================
 
-document.addEventListener("DOMContentLoaded", function () {
-  const contactForm = document.getElementById("contactForm");
-  if (!contactForm) return;
-
-  contactForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const firstName = document.getElementById("firstName")?.value.trim() || "";
-    const lastName = document.getElementById("lastName")?.value.trim() || "";
-    const email = document.getElementById("email")?.value.trim() || "";
-    const phone = document.getElementById("phone")?.value.trim() || "";
-
-    localStorage.setItem("firstName", firstName);
-    localStorage.setItem("lastName", lastName);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phone", phone);
-
-    const params = new URLSearchParams(window.location.search);
-
-    params.set("first_name", firstName);
-    params.set("last_name", lastName);
-    params.set("email", email);
-    params.set("phone", phone);
-
-    window.location.href = "get-your-offer-send.html?" + params.toString();
-  });
-});
 
 /* ===============================
    HAMBURGER DROPDOWN (ALL PAGES)
@@ -323,10 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// =========================================
-// SAVE CONTACT FORM DATA FOR NEXT STEP
-// =========================================
-
 document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
   if (!contactForm) return;
@@ -334,19 +300,22 @@ document.addEventListener("DOMContentLoaded", function () {
   contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const firstName = document.getElementById("firstName");
-    const lastName = document.getElementById("lastName");
-    const email = document.getElementById("email");
-    const phone = document.getElementById("phone");
+    const firstName = document.getElementById("firstName")?.value.trim() || "";
+    const lastName = document.getElementById("lastName")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const phone = document.getElementById("phone")?.value.trim() || "";
 
-    localStorage.setItem("firstName", firstName ? firstName.value : "");
-    localStorage.setItem("lastName", lastName ? lastName.value : "");
-    localStorage.setItem("email", email ? email.value : "");
-    localStorage.setItem("phone", phone ? phone.value : "");
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
 
     const params = new URLSearchParams(window.location.search);
+    params.set("first_name", firstName);
+    params.set("last_name", lastName);
+    params.set("email", email);
+    params.set("phone", phone);
 
-    window.location.href =
-      "get-your-offer.html?" + params.toString();
+    window.location.href = "get-your-offer-send.html?" + params.toString();
   });
 });
