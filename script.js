@@ -77,44 +77,30 @@ window.initAutocomplete = initAutocomplete;
 // ===============================
 
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("addressForm");
-  if (!form) return;
+  const contactForm = document.getElementById("contactForm");
+  if (!contactForm) return;
 
-  form.addEventListener("submit", function (e) {
+  contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    if (!selectedAddress) {
-      alert("Please select a valid address from the dropdown.");
-      return;
-    }
+    const firstName = document.getElementById("firstName")?.value.trim() || "";
+    const lastName = document.getElementById("lastName")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const phone = document.getElementById("phone")?.value.trim() || "";
 
-    const btn = document.getElementById("offerBtn");
-    if (btn) {
-      btn.innerText = "Requesting...";
-      btn.disabled = true;
-    }
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
 
-    setTimeout(function () {
-      const encoded = encodeURIComponent(selectedAddress);
-      const params = new URLSearchParams();
+    const params = new URLSearchParams(window.location.search);
 
-      [
-        "fbclid",
-        "fbc",
-        "fbp",
-        "utm_source",
-        "utm_campaign",
-        "utm_term",
-        "utm_device",
-        "utm_adgroup"
-      ].forEach(function (p) {
-        const v = localStorage.getItem(p);
-        if (v) params.append(p, v);
-      });
+    params.set("first_name", firstName);
+    params.set("last_name", lastName);
+    params.set("email", email);
+    params.set("phone", phone);
 
-      window.location.href =
-        "/get-your-offer.html?address=" + encoded + "&" + params.toString();
-    }, 1200);
+    window.location.href = "get-your-offer-send.html?" + params.toString();
   });
 });
 
