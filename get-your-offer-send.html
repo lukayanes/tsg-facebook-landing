@@ -73,61 +73,79 @@ OFFER COMPLETION SECTION
     <input type="hidden" id="addressField" name="address">
 
 <!-- ========================= 
-INLINE CRM FORM
+INLINE CRM FORM — META / FACEBOOK OFFLINE LEAD TRACKING
 ========================== -->
 <div class="form-embed" id="ghl-form-ppc2"></div>
 
 <script>
+(function () {
+  const stored = new URLSearchParams(window.location.search);
 
-(function(){
+  // =========================================
+  // CONTACT / ADDRESS PREFILL
+  // =========================================
+  stored.set("address1", localStorage.getItem("addressStreet") || "");
+  stored.set("city", localStorage.getItem("addressCity") || "");
+  stored.set("state", localStorage.getItem("addressState") || "");
+  stored.set("postal_code", localStorage.getItem("addressPostal") || "");
+  stored.set("country", localStorage.getItem("addressCountry") || "");
 
-const stored = new URLSearchParams(window.location.search);
+  stored.set("first_name", localStorage.getItem("firstName") || "");
+  stored.set("last_name", localStorage.getItem("lastName") || "");
+  stored.set("email", localStorage.getItem("email") || "");
+  stored.set("phone", localStorage.getItem("phone") || "");
 
-stored.set("address1", localStorage.getItem("addressStreet") || "");
-stored.set("city", localStorage.getItem("addressCity") || "");
-stored.set("state", localStorage.getItem("addressState") || "");
-stored.set("postal_code", localStorage.getItem("addressPostal") || "");
-stored.set("country", localStorage.getItem("addressCountry") || "");
+  // =========================================
+  // META / FACEBOOK TRACKING FIELDS
+  // =========================================
+  [
+    "fbclid",
+    "fbc",
+    "fbp",
+    "utm_source",
+    "utm_campaign",
+    "utm_term",
+    "utm_device",
+    "utm_adgroup"
+  ].forEach(function (p) {
+    const value = localStorage.getItem(p);
+    if (value) {
+      stored.set(p, value);
+    }
+  });
 
-stored.set("first_name", localStorage.getItem("firstName") || "");
-stored.set("last_name", localStorage.getItem("lastName") || "");
-stored.set("email", localStorage.getItem("email") || "");
-stored.set("phone", localStorage.getItem("phone") || "");
+  // Optional static source marker
+  stored.set("lead_source", "Facebook");
 
-[
-"gclid",
-"wbraid",
-"gbraid",
-"utm_source",
-"utm_campaign",
-"utm_term",
-"utm_device",
-"utm_adgroup"
-].forEach(function(p){
+  // =========================================
+  // BUILD IFRAME
+  // =========================================
+  const iframe = document.createElement("iframe");
 
-  const value = localStorage.getItem(p);
+  iframe.src =
+    "https://links.summitflowcrm.com/widget/form/dNKGsbO90msgBMgJWxKQ?" +
+    stored.toString();
 
-  if(value){
-    stored.set(p,value);
-  }
+  iframe.style.width = "100%";
+  iframe.style.height = "1305px";
+  iframe.style.border = "none";
+  iframe.style.borderRadius = "3px";
+  iframe.id = "inline-dNKGsbO90msgBMgJWxKQ";
+  iframe.setAttribute("data-layout", "{'id':'INLINE'}");
+  iframe.setAttribute("data-trigger-type", "alwaysShow");
+  iframe.setAttribute("data-trigger-value", "");
+  iframe.setAttribute("data-activation-type", "alwaysActivated");
+  iframe.setAttribute("data-activation-value", "");
+  iframe.setAttribute("data-deactivation-type", "neverDeactivate");
+  iframe.setAttribute("data-deactivation-value", "");
+  iframe.setAttribute("data-form-name", "PPC / Website 2");
+  iframe.setAttribute("data-height", "1305");
+  iframe.setAttribute("data-layout-iframe-id", "inline-dNKGsbO90msgBMgJWxKQ");
+  iframe.setAttribute("data-form-id", "dNKGsbO90msgBMgJWxKQ");
+  iframe.setAttribute("title", "PPC / Website 2");
 
-});
-
-const iframe = document.createElement("iframe");
-
-iframe.src =
-"https://links.summitflowcrm.com/widget/form/VJB0TpRIU9lDSLuoLikz?" +
-stored.toString();
-
-iframe.style.width="100%";
-iframe.style.height="1026px";
-iframe.style.border="none";
-iframe.style.borderRadius="10px";
-
-document.getElementById("ghl-form-ppc2").appendChild(iframe);
-
+  document.getElementById("ghl-form-ppc2").appendChild(iframe);
 })();
-
 </script>
 
 <script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
