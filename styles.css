@@ -6,10 +6,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root{
-  --green: #0F3D2E;
-  --green-dark: #0A2A20;
-  --gold: #C6A84A;
-  --gold-dark: #b49636;
+  --green: #1D4ED8;
+  --green-dark: #1E3A8A;
+  --gold: #60A5FA;
+  --gold-dark: #3B82F6;
   --light-bg: #F6F4ED;
   --text-dark: #111111;
   --muted: #6b6b6b;
