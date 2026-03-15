@@ -6,7 +6,7 @@ let selectedAddress = "";
 
 function initAutocomplete() {
   const input = document.getElementById("autocomplete");
-  if (!input) return;
+  if (!input || !window.google || !google.maps || !google.maps.places) return;
 
   const autocomplete = new google.maps.places.Autocomplete(input, {
     componentRestrictions: { country: "us" },
@@ -72,18 +72,94 @@ function initAutocomplete() {
 
 window.initAutocomplete = initAutocomplete;
 
-
-
 /* ===============================
-   HAMBURGER DROPDOWN (ALL PAGES)
+   ADDRESS FORM SUBMIT
+   index.html -> get-your-offer.html
 ================================ */
-function toggleMenu() {
-  const menu = document.getElementById("dropdownMenu");
-  if (menu) menu.classList.toggle("show");
-}
+document.addEventListener("DOMContentLoaded", function () {
+  const addressForm = document.getElementById("addressForm");
+  if (!addressForm) return;
+
+  addressForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const input = document.getElementById("autocomplete");
+    const typedAddress = input ? input.value.trim() : "";
+    const finalAddress = selectedAddress || typedAddress;
+
+    if (!finalAddress) {
+      alert("Please enter your property address.");
+      return;
+    }
+
+    localStorage.setItem("address", finalAddress);
+
+    const btn = document.getElementById("offerBtn");
+    if (btn) {
+      btn.innerText = "Requesting...";
+      btn.disabled = true;
+    }
+
+    setTimeout(function () {
+      const params = new URLSearchParams();
+      params.set("address", finalAddress);
+
+      [
+        "fbclid",
+        "fbc",
+        "fbp",
+        "utm_source",
+        "utm_medium",
+        "utm_campaign_name",
+        "utm_campaign",
+        "utm_adgroup",
+        "utm_ad",
+        "utm_term",
+        "utm_device"
+      ].forEach(function (key) {
+        const value = localStorage.getItem(key);
+        if (value) params.set(key, value);
+      });
+
+      window.location.href = "get-your-offer.html?" + params.toString();
+    }, 800);
+  });
+});
 
 /* ===============================
-   GET OFFER PAGE LOGIC
+   CONTACT FORM SUBMIT
+   get-your-offer.html -> get-your-offer-send.html
+================================ */
+document.addEventListener("DOMContentLoaded", function () {
+  const contactForm = document.getElementById("contactForm");
+  if (!contactForm) return;
+
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById("firstName")?.value.trim() || "";
+    const lastName = document.getElementById("lastName")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const phone = document.getElementById("phone")?.value.trim() || "";
+
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phone", phone);
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("first_name", firstName);
+    params.set("last_name", lastName);
+    params.set("email", email);
+    params.set("phone", phone);
+
+    window.location.href = "get-your-offer-send.html?" + params.toString();
+  });
+});
+
+/* ===============================
+   FINAL OFFER PAGE LOGIC
+   get-your-offer-send.html
 ================================ */
 document.addEventListener("DOMContentLoaded", function () {
   const offerForm = document.getElementById("offerPageForm");
@@ -95,39 +171,47 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       const address = offerInput.value.trim();
-      if (!address) return;
+      if (!address) {
+        alert("Please enter your property address.");
+        return;
+      }
+
+      localStorage.setItem("address", address);
 
       offerBtn.innerText = "Requesting...";
       offerBtn.disabled = true;
 
       setTimeout(() => {
-        const encoded = encodeURIComponent(address);
+        const params = new URLSearchParams(window.location.search);
+        params.set("address", address);
 
-        const query = window.location.search
-          ? "&" + window.location.search.substring(1)
-          : "";
-
-        window.location.href =
-          "get-your-offer.html?address=" + encoded + query;
+        window.location.href = "get-your-offer-send.html?" + params.toString();
       }, 800);
     });
   }
 });
 
+/* ===============================
+   HAMBURGER DROPDOWN
+================================ */
+function toggleMenu() {
+  const menu = document.getElementById("dropdownMenu");
+  if (menu) menu.classList.toggle("show");
+}
+
 function openMenu() {
-  document.getElementById("sideMenu").classList.add("active");
-  document.getElementById("menuOverlay").classList.add("active");
+  document.getElementById("sideMenu")?.classList.add("active");
+  document.getElementById("menuOverlay")?.classList.add("active");
 }
 
 function closeMenu() {
-  document.getElementById("sideMenu").classList.remove("active");
-  document.getElementById("menuOverlay").classList.remove("active");
+  document.getElementById("sideMenu")?.classList.remove("active");
+  document.getElementById("menuOverlay")?.classList.remove("active");
 }
 
 // ===============================
 // HERO ADDRESS BAR NAV REPLACEMENT
 // ===============================
-
 document.addEventListener("DOMContentLoaded", function () {
   const hero = document.querySelector(".hero");
   const floatingBar = document.getElementById("floatingOffer");
@@ -155,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // ===============================
 // AUTO-DETECT USER STATE
 // ===============================
-
 document.addEventListener("DOMContentLoaded", function () {
   const stateEl = document.getElementById("userState");
   if (!stateEl) return;
@@ -167,9 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
         stateEl.textContent = data.region;
       }
     })
-    .catch(() => {
-      // Fail silently
-    });
+    .catch(() => {});
 });
 
 // FAQ Accordion
@@ -187,9 +268,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =========================================
-CAPTURE META CLICK DATA + UTMs
+   CAPTURE META CLICK DATA + UTMs
 ========================================= */
-
 (function () {
   const params = new URLSearchParams(window.location.search);
 
@@ -197,11 +277,8 @@ CAPTURE META CLICK DATA + UTMs
   if (fbclid) {
     localStorage.setItem("fbclid", fbclid);
 
-    const existingFbc = localStorage.getItem("fbc");
-    if (!existingFbc) {
-      const fbc = "fb.1." + Date.now() + "." + fbclid;
-      localStorage.setItem("fbc", fbc);
-    }
+    const fbc = "fb.1." + Date.now() + "." + fbclid;
+    localStorage.setItem("fbc", fbc);
   }
 
   const fbpMatch = document.cookie.match(/(?:^|; )_fbp=([^;]+)/);
@@ -211,42 +288,44 @@ CAPTURE META CLICK DATA + UTMs
 
   [
     "utm_source",
+    "utm_medium",
+    "utm_campaign_name",
     "utm_campaign",
+    "utm_adgroup",
+    "utm_ad",
     "utm_term",
-    "utm_device",
-    "utm_adgroup"
-  ].forEach(function (p) {
-    const value = params.get(p);
+    "utm_device"
+  ].forEach(function (key) {
+    const value = params.get(key);
     if (value) {
-      localStorage.setItem(p, value);
+      localStorage.setItem(key, value);
     }
   });
 })();
 
 /* =========================================
-POPULATE META / UTM FIELDS INTO GHL
+   POPULATE META / UTM FIELDS INTO FORM
 ========================================= */
-
 (function () {
   const fieldMap = {
     fbclid: "fbclid",
     fbc: "fbc",
     fbp: "fbp",
     utm_source: "utm_source",
+    utm_medium: "utm_medium",
+    utm_campaign_name: "utm_campaign_name",
     utm_campaign: "utm_campaign",
+    utm_adgroup: "utm_adgroup",
+    utm_ad: "utm_ad",
     utm_term: "utm_term",
-    utm_device: "utm_device",
-    utm_adgroup: "utm_adgroup"
+    utm_device: "utm_device"
   };
 
   function populate() {
     Object.keys(fieldMap).forEach(function (param) {
       const stored = localStorage.getItem(param);
       const input = document.querySelector(`[name="${fieldMap[param]}"]`);
-
-      if (stored && input) {
-        input.value = stored;
-      }
+      if (stored && input) input.value = stored;
     });
   }
 
@@ -256,66 +335,20 @@ POPULATE META / UTM FIELDS INTO GHL
   setTimeout(populate, 3000);
 })();
 
-// Populate address field from URL
+/* =========================================
+   POPULATE ADDRESS INTO FORM
+========================================= */
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
-  const address = params.get("address");
-
+  const address = params.get("address") || localStorage.getItem("address") || "";
   if (!address) return;
-
-  const decoded = decodeURIComponent(address);
 
   const field =
     document.querySelector('[name="address"]') ||
-    document.querySelector("#offerAddress");
+    document.getElementById("offerAddress") ||
+    document.getElementById("autocomplete");
 
   if (field) {
-    field.value = decoded;
+    field.value = address;
   }
-});
-
-/* =========================================
-POPULATE ADDRESS INTO GHL FORM
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
-  const address = params.get("address");
-
-  if (!address) return;
-
-  const decoded = decodeURIComponent(address);
-  const field = document.querySelector('[name="address"]');
-
-  if (field) {
-    field.value = decoded;
-    console.log("Address inserted:", decoded);
-  }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const contactForm = document.getElementById("contactForm");
-  if (!contactForm) return;
-
-  contactForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const firstName = document.getElementById("firstName")?.value.trim() || "";
-    const lastName = document.getElementById("lastName")?.value.trim() || "";
-    const email = document.getElementById("email")?.value.trim() || "";
-    const phone = document.getElementById("phone")?.value.trim() || "";
-
-    localStorage.setItem("firstName", firstName);
-    localStorage.setItem("lastName", lastName);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phone", phone);
-
-    const params = new URLSearchParams(window.location.search);
-    params.set("first_name", firstName);
-    params.set("last_name", lastName);
-    params.set("email", email);
-    params.set("phone", phone);
-
-    window.location.href = "get-your-offer-send.html?" + params.toString();
-  });
 });
