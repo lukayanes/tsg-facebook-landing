@@ -347,6 +347,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
 
     window.location.href =
-      "get-your-offer-send.html?" + params.toString();
+      "get-your-offer.html?" + params.toString();
   });
 });
