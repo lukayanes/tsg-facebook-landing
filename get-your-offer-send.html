@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complete Your Offer | Throne Holdings Group</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/throne logo.png">
+<script>
+if (location.protocol !== 'https:') {
+  location.replace(`https://${location.host}${location.pathname}${location.search}`);
+}
+</script>
+
+<!-- Google tag (same as index) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3KXMLH92S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-P3KXMLH92S');
+</script>
+</head>
+
+<body>
+
+<!-- =========================
+HEADER (MATCH INDEX)
+========================= -->
+<header class="top-nav">
+  <div class="container nav-inner">
+    
+    <a href="index.html">
+      <img src="assets/throne logo.png" class="logo" alt="Throne Holdings Group">
+    </a>
+
+    <div class="nav-right">
+      <a href="tel:9133958512" class="phone">(913) 395-8512</a>
+      <a href="get-offer.html" class="btn-primary">Get Offer!</a>
+      <div class="hamburger" onclick="openMenu()">☰</div>
+    </div>
+  </div>
+</header>
+
+<!-- Slide Menu -->
+<div id="sideMenu" class="side-menu">
+  <div class="side-menu-inner">
+    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <a href="index.html">Home</a>
+    <a href="get-offer.html">Get Offer</a>
+    <a href="about.html">About-Us</a>
+  </div>
+</div>
+
+<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+<!-- =========================
+OFFER COMPLETION SECTION
+========================= -->
+<section class="section light">
+  <div class="container narrow center">
+
+    <h1>Excellent! Help Us Learn More About Your Property and Situation...</h1>
+
+    <p class="lead-text">
+      Your two minutes will help us make our offer more quickly and more accurately. The more information we have, the better offer we can confidently make for your property:
+    </p>
+
+    <h3 id="displayAddress" class="address-highlight"></h3>
+
+    <!-- Hidden Address Field -->
+    <input type="hidden" id="addressField" name="address">
+
+<!-- ========================= 
+INLINE CRM FORM
+========================== -->
+<div class="form-embed" id="ghl-form-ppc2"></div>
+
+<script>
+
+(function(){
+
+const stored = new URLSearchParams(window.location.search);
+
+stored.set("address1", localStorage.getItem("addressStreet") || "");
+stored.set("city", localStorage.getItem("addressCity") || "");
+stored.set("state", localStorage.getItem("addressState") || "");
+stored.set("postal_code", localStorage.getItem("addressPostal") || "");
+stored.set("country", localStorage.getItem("addressCountry") || "");
+
+stored.set("first_name", localStorage.getItem("firstName") || "");
+stored.set("last_name", localStorage.getItem("lastName") || "");
+stored.set("email", localStorage.getItem("email") || "");
+stored.set("phone", localStorage.getItem("phone") || "");
+
+[
+"gclid",
+"wbraid",
+"gbraid",
+"utm_source",
+"utm_campaign",
+"utm_term",
+"utm_device",
+"utm_adgroup"
+].forEach(function(p){
+
+  const value = localStorage.getItem(p);
+
+  if(value){
+    stored.set(p,value);
+  }
+
+});
+
+const iframe = document.createElement("iframe");
+
+iframe.src =
+"https://links.summitflowcrm.com/widget/form/VJB0TpRIU9lDSLuoLikz?" +
+stored.toString();
+
+iframe.style.width="100%";
+iframe.style.height="1026px";
+iframe.style.border="none";
+iframe.style.borderRadius="10px";
+
+document.getElementById("ghl-form-ppc2").appendChild(iframe);
+
+})();
+
+</script>
+
+<script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
+  
+    <!-- =========================
+    TRUST CHECK SECTION
+    ========================== -->
+
+    <div class="trust-checks">
+      <div>✔ We will not share your information or send SPAM</div>
+      <div>✔ We use your phone and email for further contact and verification</div>
+      <div class="warning-text">✔ If you enter an incorrect number, we cannot send an offer</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================
+FOOTER (MATCH INDEX)
+========================= -->
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a href="#top">
+        <img src="assets/throne logo.png" class="footer-logo" alt="Throne Holdings Group">
+      </a>
+    </div>
+
+    <div>
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </div>
+
+    <div>
+      <h4>Contact Us</h4>
+      <a href="tel:9133958512">(913) 395-8512</a>
+      <a href="mailto:info@throneholdingsgroup.com">
+        info@throneholdingsgroup.com
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © <span id="year"></span> Throne Holdings Group. All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const params = new URLSearchParams(window.location.search);
+  const address = params.get("address");
+
+  if(address){
+    const decoded = decodeURIComponent(address);
+    document.getElementById("addressField").value = decoded;
+    document.getElementById("displayAddress").textContent = decoded;
+  }
+</script>
+
+<script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complete Your Offer | Throne Holdings Group</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/throne logo.png">
+<script>
+if (location.protocol !== 'https:') {
+  location.replace(`https://${location.host}${location.pathname}${location.search}`);
+}
+</script>
+
+<!-- Google tag (same as index) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3KXMLH92S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-P3KXMLH92S');
+</script>
+</head>
+
+<body>
+
+<!-- =========================
+HEADER (MATCH INDEX)
+========================= -->
+<header class="top-nav">
+  <div class="container nav-inner">
+    
+    <a href="index.html">
+      <img src="assets/throne logo.png" class="logo" alt="Throne Holdings Group">
+    </a>
+
+    <div class="nav-right">
+      <a href="tel:9133958512" class="phone">(913) 395-8512</a>
+      <a href="get-offer.html" class="btn-primary">Get Offer!</a>
+      <div class="hamburger" onclick="openMenu()">☰</div>
+    </div>
+  </div>
+</header>
+
+<!-- Slide Menu -->
+<div id="sideMenu" class="side-menu">
+  <div class="side-menu-inner">
+    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <a href="index.html">Home</a>
+    <a href="get-offer.html">Get Offer</a>
+    <a href="about.html">About-Us</a>
+  </div>
+</div>
+
+<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+<!-- =========================
+OFFER COMPLETION SECTION
+========================= -->
+<section class="section light">
+  <div class="container narrow center">
+
+    <h1>You're Almost There</h1>
+
+    <p class="lead-text">
+      Enter your contact details below and we’ll send your cash offer for:
+    </p>
+
+    <h3 id="displayAddress" class="address-highlight"></h3>
+
+    <!-- =========================
+    INLINE CRM FORM
+    ========================== -->
+    <form id="contactForm" class="lead-form">
+
+  <!-- Hidden Address Field -->
+  <input type="hidden" id="addressField" name="address">
+
+  <div class="two-col">
+    <input id="firstName" name="first_name" placeholder="First Name" required>
+    <input id="lastName" name="last_name" placeholder="Last Name" required>
+  </div>
+
+  <input id="email" name="email" placeholder="Email Address" required>
+
+  <input id="phone" name="phone" placeholder="Phone Number">
+
+  <label class="consent">
+    <input type="checkbox" required>
+
+    By checking this box, I consent to receive transactional messages related to my account, offers, or services I have requested from Throne Holdings Group LLC. These messages may include appointment reminders, offer updates, and account notifications among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
+  </label>
+
+  <button type="submit" class="large-btn">
+    Get My Offer
+  </button>
+
+  <div class="trust-text">
+    ✓ We will not share your information or send SPAM
+    <br>
+    ✓ We use your phone and email for further contact and verification
+    <br>
+    <span class="warning-text">
+      ✕ If you enter an incorrect number, we cannot send an offer
+    </span>
+  </div>
+
+</form>
+
+  </div>
+</section>
+
+
+<!-- =========================
+FOOTER (MATCH INDEX)
+========================= -->
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a href="#top">
+        <img src="assets/throne logo.png" class="footer-logo" alt="Throne Holdings Group">
+      </a>
+    </div>
+
+    <div>
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+    </div>
+
+    <div>
+      <h4>Contact Us</h4>
+      <a href="tel:9133958512">(913) 395-8512</a>
+      <a href="mailto:info@throneholdingsgroup.com">
+        info@throneholdingsgroup.com
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © <span id="year"></span> Throne Holdings Group. All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const params = new URLSearchParams(window.location.search);
+  const address = params.get("address");
+
+  if(address){
+    const decoded = decodeURIComponent(address);
+    document.getElementById("addressField").value = decoded;
+    document.getElementById("displayAddress").textContent = decoded;
+  }
+</script>
+
+
+  
+<script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
+<script src="script.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const phoneInput = document.getElementById("phone");
+  if(!phoneInput) return;
+
+  phoneInput.addEventListener("input", function(e){
+
+    let numbers = e.target.value.replace(/\D/g, "");
+
+    if(numbers.length > 10){
+      numbers = numbers.substring(0,10);
+    }
+
+    let formatted = numbers;
+
+    if(numbers.length > 6){
+      formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3,6)}-${numbers.slice(6)}`;
+    }
+    else if(numbers.length > 3){
+      formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3)}`;
+    }
+
+    e.target.value = formatted;
+
+  });
+
+});
+</script>
+  
+</body>
+</html>
