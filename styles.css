@@ -1525,7 +1525,7 @@ CHECKBOX FIX
 
 .floating-offer.sticky {
   position: fixed;
-  top: 110px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
