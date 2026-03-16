@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Get Offer | The Summit Group</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="icon" href="assets/throne logo.png">
+
 <script>
 if (location.protocol !== 'https:') {
   location.replace(`https://${location.host}${location.pathname}${location.search}`);
 }
 </script>
+
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -23,31 +26,26 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1490549599338491');
 fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
-/></noscript>
+<noscript>
+  <img height="1" width="1" style="display:none"
+       src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1" />
+</noscript>
 <!-- End Meta Pixel Code -->
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MN2938KBVH"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MN2938KBVH');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MN2938KBVH');
 </script>
-<link rel="icon" href="assets/throne logo.png">
-
 </head>
 
 <body>
 
-<!-- =========================
-HEADER (MATCH INDEX)
-========================= -->
 <header class="top-nav">
   <div class="container nav-inner">
-    
     <a href="index.html">
       <img src="assets/throne logo.png" class="logo" alt="The Summit Group">
     </a>
@@ -60,21 +58,17 @@ HEADER (MATCH INDEX)
   </div>
 </header>
 
-<!-- Slide Menu -->
 <div id="sideMenu" class="side-menu">
   <div class="side-menu-inner">
     <div class="close-btn" onclick="closeMenu()">✕</div>
     <a href="index.html">Home</a>
     <a href="get-offer.html">Get Offer</a>
-    <a href="about.html">About-Us</a>
+    <a href="about.html">About Us</a>
   </div>
 </div>
 
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
-<!-- =========================
-HERO (MATCH INDEX STRUCTURE)
-========================= -->
 <section class="hero" id="top">
   <div class="overlay"></div>
 
@@ -82,24 +76,25 @@ HERO (MATCH INDEX STRUCTURE)
     <h4>No Repairs, No Showings, No Cleaning, No Stress</h4>
 
     <h1>
-      LET'S GET <span class="gold">STARTED</span><br>
+      LET'S GET <span class="gold">STARTED</span>
     </h1>
 
-
-    <!-- SAME FORM IDS AS INDEX -->
-    <div class="floating-offer">
+    <div class="floating-offer" id="floatingOffer">
       <form id="addressForm" class="floating-offer-form">
-        <input id="autocomplete" type="text" placeholder="Home Address Here..." required />
+        <input
+          id="autocomplete"
+          name="address"
+          type="text"
+          placeholder="Home Address Here..."
+          autocomplete="street-address"
+          required
+        />
         <button id="offerBtn" type="submit">Get Offer!</button>
       </form>
     </div>
-
   </div>
 </section>
 
-<!-- =========================
-HOW IT WORKS (IDENTICAL TO INDEX)
-========================= -->
 <section class="section light">
   <div class="container center">
     <h2>How It Works</h2>
@@ -132,12 +127,8 @@ HOW IT WORKS (IDENTICAL TO INDEX)
   </div>
 </section>
 
-<!-- =========================
-FOOTER (MATCH INDEX)
-========================= -->
 <footer class="footer">
   <div class="container footer-grid">
-
     <div>
       <a href="#top">
         <img src="assets/throne logo.png" class="footer-logo" alt="The Summit Group">
@@ -153,22 +144,14 @@ FOOTER (MATCH INDEX)
     <div>
       <h4>Contact Us</h4>
       <a href="tel:8139249450">(813) 924-9450</a>
-      <a href="mailto:info@summitgroupacq.com">
-        info@summitgroupacq.com
-      </a>
+      <a href="mailto:info@summitgroupacq.com">info@summitgroupacq.com</a>
     </div>
-
   </div>
 
   <div class="footer-bottom">
     © <span id="year"></span> The Summit Group. All Rights Reserved.
   </div>
 </footer>
-
-<!-- SAME SCRIPTS AS INDEX -->
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWSiAx5IPYOev213faf2JPQQNIz-4ymLs&libraries=places&callback=initAutocomplete" async defer></script>
 <script src="script.js"></script>
