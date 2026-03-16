@@ -552,7 +552,26 @@ document.addEventListener("DOMContentLoaded", function () {
 // ===============================
 
 async function getRecaptchaToken() {
-  return await grecaptcha.enterprise.execute("6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G", {
-    action: "submit_lead"
+  if (
+    !window.grecaptcha ||
+    !grecaptcha.enterprise ||
+    typeof grecaptcha.enterprise.ready !== "function" ||
+    typeof grecaptcha.enterprise.execute !== "function"
+  ) {
+    return "";
+  }
+
+  return new Promise((resolve, reject) => {
+    grecaptcha.enterprise.ready(async () => {
+      try {
+        const token = await grecaptcha.enterprise.execute(
+          "6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G",
+          { action: "submit_lead" }
+        );
+        resolve(token || "");
+      } catch (err) {
+        reject(err);
+      }
+    });
   });
 }
