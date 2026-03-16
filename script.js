@@ -1,8 +1,61 @@
 // ===============================
-// GOOGLE ADDRESS AUTOCOMPLETE
+// GLOBAL ADDRESS STATE
 // ===============================
 
 let selectedAddress = "";
+let parsedAddress = {
+  street: "",
+  city: "",
+  state: "",
+  postal: "",
+  country: ""
+};
+
+// ===============================
+// STORAGE HELPERS
+// ===============================
+
+function clearStoredAddress() {
+  selectedAddress = "";
+  parsedAddress = {
+    street: "",
+    city: "",
+    state: "",
+    postal: "",
+    country: ""
+  };
+
+  localStorage.removeItem("address");
+  localStorage.removeItem("addressStreet");
+  localStorage.removeItem("addressCity");
+  localStorage.removeItem("addressState");
+  localStorage.removeItem("addressPostal");
+  localStorage.removeItem("addressCountry");
+}
+
+function saveStoredAddress(fullAddress, parts) {
+  localStorage.setItem("address", fullAddress || "");
+  localStorage.setItem("addressStreet", parts.street || "");
+  localStorage.setItem("addressCity", parts.city || "");
+  localStorage.setItem("addressState", parts.state || "");
+  localStorage.setItem("addressPostal", parts.postal || "");
+  localStorage.setItem("addressCountry", parts.country || "");
+}
+
+function getStoredAddress() {
+  return {
+    address: localStorage.getItem("address") || "",
+    street: localStorage.getItem("addressStreet") || "",
+    city: localStorage.getItem("addressCity") || "",
+    state: localStorage.getItem("addressState") || "",
+    postal: localStorage.getItem("addressPostal") || "",
+    country: localStorage.getItem("addressCountry") || ""
+  };
+}
+
+// ===============================
+// GOOGLE ADDRESS AUTOCOMPLETE
+// ===============================
 
 function initAutocomplete() {
   const input = document.getElementById("autocomplete");
@@ -14,33 +67,53 @@ function initAutocomplete() {
     fields: ["formatted_address", "address_components", "geometry"]
   });
 
+  input.addEventListener("input", function () {
+    selectedAddress = "";
+    parsedAddress = {
+      street: "",
+      city: "",
+      state: "",
+      postal: "",
+      country: ""
+    };
+  });
+
   autocomplete.addListener("place_changed", function () {
     const place = autocomplete.getPlace();
 
     if (!place || !place.formatted_address || !place.address_components) {
-      selectedAddress = "";
+      clearStoredAddress();
       console.log("Google place data missing:", place);
       return;
     }
 
-    let street = "";
+    let streetNumber = "";
+    let route = "";
     let city = "";
     let state = "";
     let postal = "";
     let country = "";
 
     place.address_components.forEach(component => {
-      const types = component.types;
+      const types = component.types || [];
 
       if (types.includes("street_number")) {
-        street = component.long_name + " " + street;
+        streetNumber = component.long_name;
       }
 
       if (types.includes("route")) {
-        street += component.long_name;
+        route = component.long_name;
       }
 
-      if (types.includes("locality")) {
+      if (
+        !city &&
+        (
+          types.includes("locality") ||
+          types.includes("postal_town") ||
+          types.includes("sublocality") ||
+          types.includes("sublocality_level_1")
+        )
+      ) {
         city = component.long_name;
       }
 
@@ -57,25 +130,31 @@ function initAutocomplete() {
       }
     });
 
+    const street = [streetNumber, route].filter(Boolean).join(" ").trim();
+
     selectedAddress = place.formatted_address;
+    parsedAddress = {
+      street,
+      city,
+      state,
+      postal,
+      country
+    };
 
-    localStorage.setItem("addressStreet", street);
-    localStorage.setItem("addressCity", city);
-    localStorage.setItem("addressState", state);
-    localStorage.setItem("addressPostal", postal);
-    localStorage.setItem("addressCountry", country);
-    localStorage.setItem("address", place.formatted_address);
+    saveStoredAddress(selectedAddress, parsedAddress);
 
-    console.log("Selected address:", place.formatted_address);
+    console.log("Selected address:", selectedAddress);
+    console.log("Parsed address:", parsedAddress);
   });
 }
 
 window.initAutocomplete = initAutocomplete;
 
-/* ===============================
-   ADDRESS FORM SUBMIT
-   index.html -> get-your-offer.html
-================================ */
+// ===============================
+// ADDRESS FORM SUBMIT
+// index.html / get-offer.html -> get-your-offer.html
+// ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const addressForm = document.getElementById("addressForm");
   if (!addressForm) return;
@@ -85,22 +164,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const input = document.getElementById("autocomplete");
     const typedAddress = input ? input.value.trim() : "";
-    const finalAddress = selectedAddress || typedAddress;
+    const googleLoaded = !!(window.google && google.maps && google.maps.places);
 
-    if (!finalAddress) {
+    if (!typedAddress) {
       alert("Please enter your property address.");
       return;
     }
 
-    if (!selectedAddress && typedAddress) {
-      localStorage.removeItem("addressStreet");
-      localStorage.removeItem("addressCity");
-      localStorage.removeItem("addressState");
-      localStorage.removeItem("addressPostal");
-      localStorage.removeItem("addressCountry");
+    let finalAddress = "";
+    let parts = {
+      street: "",
+      city: "",
+      state: "",
+      postal: "",
+      country: ""
+    };
+
+    // If Google is loaded, require actual dropdown selection.
+    if (googleLoaded) {
+      if (!selectedAddress) {
+        alert("Please select your address from the dropdown suggestions.");
+        return;
+      }
+
+      finalAddress = selectedAddress;
+      parts = { ...parsedAddress };
+    } else {
+      // Safe fallback only if Places script failed to load.
+      finalAddress = typedAddress;
+      parts.street = typedAddress;
     }
 
-    localStorage.setItem("address", finalAddress);
+    saveStoredAddress(finalAddress, parts);
 
     const btn = document.getElementById("offerBtn");
     if (btn) {
@@ -108,36 +203,61 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.disabled = true;
     }
 
+    const params = new URLSearchParams();
+    params.set("address", finalAddress);
+
+    [
+      "fbclid",
+      "fbc",
+      "fbp",
+      "utm_source",
+      "utm_medium",
+      "utm_campaign_name",
+      "utm_campaign",
+      "utm_adgroup",
+      "utm_ad",
+      "utm_term",
+      "utm_device"
+    ].forEach(function (key) {
+      const value = localStorage.getItem(key);
+      if (value) params.set(key, value);
+    });
+
     setTimeout(function () {
-      const params = new URLSearchParams();
-      params.set("address", finalAddress);
-
-      [
-        "fbclid",
-        "fbc",
-        "fbp",
-        "utm_source",
-        "utm_medium",
-        "utm_campaign_name",
-        "utm_campaign",
-        "utm_adgroup",
-        "utm_ad",
-        "utm_term",
-        "utm_device"
-      ].forEach(function (key) {
-        const value = localStorage.getItem(key);
-        if (value) params.set(key, value);
-      });
-
       window.location.href = "get-your-offer.html?" + params.toString();
-    }, 800);
+    }, 400);
   });
 });
 
-/* ===============================
-   CONTACT FORM SUBMIT
-   get-your-offer.html -> get-your-offer-send.html
-================================ */
+// ===============================
+// GET-YOUR-OFFER PAGE ADDRESS DISPLAY
+// ===============================
+
+document.addEventListener("DOMContentLoaded", function () {
+  const displayAddress = document.getElementById("displayAddress");
+  const addressField = document.getElementById("addressField");
+
+  if (!displayAddress && !addressField) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const stored = getStoredAddress();
+
+  const address = params.get("address") || stored.address || "";
+
+  if (displayAddress) {
+    displayAddress.textContent = address;
+  }
+
+  if (addressField) {
+    addressField.value = address;
+  }
+});
+
+// ===============================
+// CONTACT FORM SUBMIT
+// get-your-offer.html -> get-your-offer-send.html
+// ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
   if (!contactForm) return;
@@ -151,16 +271,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const phone = document.getElementById("phone")?.value.trim() || "";
 
     const addressFieldValue = document.getElementById("addressField")?.value.trim() || "";
-    const address =
-      addressFieldValue ||
-      new URLSearchParams(window.location.search).get("address") ||
-      localStorage.getItem("address") ||
-      "";
+    const params = new URLSearchParams(window.location.search);
+    const stored = getStoredAddress();
 
-    const city = localStorage.getItem("addressCity") || "";
-    const state = localStorage.getItem("addressState") || "";
-    const postal = localStorage.getItem("addressPostal") || "";
-    const country = localStorage.getItem("addressCountry") || "";
+    const address = addressFieldValue || params.get("address") || stored.address || "";
+    const city = stored.city || "";
+    const state = stored.state || "";
+    const postal = stored.postal || "";
+    const country = stored.country || "";
+
+    if (!address) {
+      alert("Missing property address. Please go back and enter your address again.");
+      return;
+    }
 
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
@@ -168,27 +291,37 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("phone", phone);
 
     try {
-      const recaptchaToken = await getRecaptchaToken();
+      let recaptchaToken = "";
+
+      if (
+        window.grecaptcha &&
+        grecaptcha.enterprise &&
+        typeof grecaptcha.enterprise.execute === "function"
+      ) {
+        recaptchaToken = await getRecaptchaToken();
+      }
 
       const tokenField = document.getElementById("recaptchaToken");
       if (tokenField) tokenField.value = recaptchaToken;
 
-      const params = new URLSearchParams(window.location.search);
+      const redirectParams = new URLSearchParams(window.location.search);
 
-      params.set("address", address);
-      params.set("city", city);
-      params.set("state", state);
-      params.set("postal_code", postal);
-      params.set("country", country);
+      redirectParams.set("address", address);
+      redirectParams.set("city", city);
+      redirectParams.set("state", state);
+      redirectParams.set("postal_code", postal);
+      redirectParams.set("country", country);
 
-      params.set("first_name", firstName);
-      params.set("last_name", lastName);
-      params.set("email", email);
-      params.set("phone", phone);
+      redirectParams.set("first_name", firstName);
+      redirectParams.set("last_name", lastName);
+      redirectParams.set("email", email);
+      redirectParams.set("phone", phone);
 
-      params.set("recaptcha_token", recaptchaToken);
+      if (recaptchaToken) {
+        redirectParams.set("recaptcha_token", recaptchaToken);
+      }
 
-      window.location.href = "get-your-offer-send.html?" + params.toString();
+      window.location.href = "get-your-offer-send.html?" + redirectParams.toString();
     } catch (err) {
       console.error("reCAPTCHA failed:", err);
       alert("Security check failed. Please try again.");
@@ -196,43 +329,46 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-/* ===============================
-   FINAL OFFER PAGE LOGIC
-   get-your-offer-send.html
-================================ */
+// ===============================
+// FINAL OFFER PAGE LOGIC
+// get-your-offer-send.html
+// ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const offerForm = document.getElementById("offerPageForm");
   const offerBtn = document.getElementById("offerPageBtn");
   const offerInput = document.getElementById("offerAddress");
 
-  if (offerForm && offerBtn && offerInput) {
-    offerForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+  if (!offerForm || !offerBtn || !offerInput) return;
 
-      const address = offerInput.value.trim();
-      if (!address) {
-        alert("Please enter your property address.");
-        return;
-      }
+  offerForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      localStorage.setItem("address", address);
+    const address = offerInput.value.trim();
 
-      offerBtn.innerText = "Requesting...";
-      offerBtn.disabled = true;
+    if (!address) {
+      alert("Please enter your property address.");
+      return;
+    }
 
-      setTimeout(() => {
-        const params = new URLSearchParams(window.location.search);
-        params.set("address", address);
+    localStorage.setItem("address", address);
 
-        window.location.href = "get-your-offer-send.html?" + params.toString();
-      }, 800);
-    });
-  }
+    offerBtn.innerText = "Requesting...";
+    offerBtn.disabled = true;
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("address", address);
+
+    setTimeout(() => {
+      window.location.href = "get-your-offer-send.html?" + params.toString();
+    }, 400);
+  });
 });
 
-/* ===============================
-   HAMBURGER DROPDOWN
-================================ */
+// ===============================
+// HAMBURGER / SIDE MENU
+// ===============================
+
 function toggleMenu() {
   const menu = document.getElementById("dropdownMenu");
   if (menu) menu.classList.toggle("show");
@@ -251,6 +387,7 @@ function closeMenu() {
 // ===============================
 // HERO ADDRESS BAR NAV REPLACEMENT
 // ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const hero = document.querySelector(".hero");
   const floatingBar = document.getElementById("floatingOffer");
@@ -278,6 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ===============================
 // AUTO-DETECT USER STATE
 // ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const stateEl = document.getElementById("userState");
   if (!stateEl) return;
@@ -292,7 +430,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(() => {});
 });
 
-// FAQ Accordion
+// ===============================
+// FAQ ACCORDION
+// ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const items = document.querySelectorAll(".faq-item");
 
@@ -306,16 +447,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-/* =========================================
-   CAPTURE META CLICK DATA + UTMs
-========================================= */
+// ===============================
+// CAPTURE META CLICK DATA + UTMS
+// ===============================
+
 (function () {
   const params = new URLSearchParams(window.location.search);
 
   const fbclid = params.get("fbclid");
   if (fbclid) {
     localStorage.setItem("fbclid", fbclid);
-
     const fbc = "fb.1." + Date.now() + "." + fbclid;
     localStorage.setItem("fbc", fbc);
   }
@@ -342,9 +483,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 })();
 
-/* =========================================
-   POPULATE META / UTM FIELDS INTO FORM
-========================================= */
+// ===============================
+// POPULATE META / UTM FIELDS INTO FORM
+// ===============================
+
 (function () {
   const fieldMap = {
     fbclid: "fbclid",
@@ -374,12 +516,14 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(populate, 3000);
 })();
 
-/* =========================================
-   POPULATE ADDRESS INTO FORM
-========================================= */
+// ===============================
+// GENERIC ADDRESS POPULATION
+// ===============================
+
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
-  const address = params.get("address") || localStorage.getItem("address") || "";
+  const stored = getStoredAddress();
+  const address = params.get("address") || stored.address || "";
   if (!address) return;
 
   const field =
@@ -387,10 +531,25 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("offerAddress") ||
     document.getElementById("autocomplete");
 
-  if (field) {
+  if (field && !field.value) {
     field.value = address;
   }
 });
+
+// ===============================
+// YEAR
+// ===============================
+
+document.addEventListener("DOMContentLoaded", function () {
+  const yearEl = document.getElementById("year");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+});
+
+// ===============================
+// RECAPTCHA
+// ===============================
 
 async function getRecaptchaToken() {
   return await grecaptcha.enterprise.execute("6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G", {
