@@ -346,3 +346,51 @@ document.addEventListener("DOMContentLoaded", function () {
     field.value = address;
   }
 });
+
+// ===============================
+// OFFER SEND PAGE ADDRESS PREFILL
+// ===============================
+
+document.addEventListener("DOMContentLoaded", function () {
+  const displayAddress = document.getElementById("displayAddress");
+  const addressField = document.getElementById("addressField");
+  const cityField = document.getElementById("cityField");
+  const stateField = document.getElementById("stateField");
+  const postalField = document.getElementById("postalField");
+  const countryField = document.getElementById("countryField");
+
+  if (!displayAddress || !addressField) return;
+
+  const params = new URLSearchParams(window.location.search);
+
+  const address = (params.get("address") || "").trim();
+  const city = (params.get("city") || "").trim();
+  const state = (params.get("state") || "").trim();
+  const postal = (params.get("postal") || "").trim();
+  const country = (params.get("country") || "").trim();
+
+  // Build pretty display line
+  let prettyAddress = address;
+
+  if (!prettyAddress) {
+    const pieces = [];
+    if (address) pieces.push(address);
+    if (city) pieces.push(city);
+    if (state) pieces.push(state);
+    if (postal) pieces.push(postal);
+    prettyAddress = pieces.join(", ");
+  }
+
+  if (prettyAddress) {
+    displayAddress.textContent = prettyAddress;
+    addressField.value = address || prettyAddress;
+  } else {
+    displayAddress.textContent = "your property";
+    addressField.value = "";
+  }
+
+  cityField.value = city;
+  stateField.value = state;
+  postalField.value = postal;
+  countryField.value = country;
+});
