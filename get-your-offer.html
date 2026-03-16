@@ -6,38 +6,6 @@
 <title>Complete Your Offer | The Summit Group</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="assets/throne logo.png">
-<script>
-if (location.protocol !== 'https:') {
-  location.replace(`https://${location.host}${location.pathname}${location.search}`);
-}
-</script>
-
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1490549599338491');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN2938KBVH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-MN2938KBVH');
-</script>
 </head>
 
 <body>
@@ -67,80 +35,40 @@ src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
 
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
-<section class="section light">
-  <div class="container narrow center">
+<section class="offer-step-section">
+  <div class="offer-step-wrap">
 
-    <h1>Excellent! Help Us Learn More About Your Property and Situation...</h1>
-
-    <p class="lead-text">
-      Your two minutes will help us make our offer more quickly and more accurately. The more information we have, the better offer we can confidently make for your property:
-    </p>
+    <h1 class="offer-step-title">Almost there!</h1>
+    <p class="offer-step-subtitle">Where should we send your offer?</p>
 
     <h3 id="displayAddress" class="address-highlight"></h3>
 
-    <input type="hidden" id="addressField" name="address">
+    <form id="contactForm" class="offer-contact-form">
+      <input type="hidden" id="addressField" name="address">
+      <input type="hidden" id="cityField" name="city">
+      <input type="hidden" id="stateField" name="state">
+      <input type="hidden" id="postalField" name="postal">
+      <input type="hidden" id="countryField" name="country">
 
-    <div class="form-embed" id="ghl-form-ppc2"></div>
+      <div class="offer-two-col">
+        <input id="firstName" name="first_name" type="text" placeholder="First Name" required>
+        <input id="lastName" name="last_name" type="text" placeholder="Last Name" required>
+      </div>
 
-    <script>
-    (function () {
-      const stored = new URLSearchParams(window.location.search);
+      <input id="email" name="email" type="email" placeholder="Email" required>
+      <input id="phone" name="phone" type="tel" placeholder="###-###-####" required>
 
-      stored.set("address1", localStorage.getItem("addressStreet") || "");
-      stored.set("city", localStorage.getItem("addressCity") || "");
-      stored.set("state", localStorage.getItem("addressState") || "");
-      stored.set("postal_code", localStorage.getItem("addressPostal") || "");
-      stored.set("country", localStorage.getItem("addressCountry") || "");
+      <label class="offer-consent">
+        <input id="consentCheckbox" name="consent" type="checkbox" required>
+        <span>
+          By checking this box, you agree to the
+          <a href="terms.html">Terms of Use</a> and
+          <a href="privacy.html">Privacy Policy</a>. You also consent to receive marketing texts and calls from Summit Group Acquisitions,
+        </span>
+      </label>
 
-      stored.set("first_name", localStorage.getItem("firstName") || "");
-      stored.set("last_name", localStorage.getItem("lastName") || "");
-      stored.set("email", localStorage.getItem("email") || "");
-      stored.set("phone", localStorage.getItem("phone") || "");
-
-      [
-        "fbclid",
-        "fbc",
-        "fbp",
-        "utm_source",
-        "utm_campaign",
-        "utm_term",
-        "utm_device",
-        "utm_adgroup"
-      ].forEach(function (p) {
-        const value = localStorage.getItem(p);
-        if (value) {
-          stored.set(p, value);
-        }
-      });
-
-      stored.set("lead_source", "Facebook");
-
-      const iframe = document.createElement("iframe");
-      iframe.src =
-        "https://links.summitflowcrm.com/widget/form/dNKGsbO90msgBMgJWxKQ?" +
-        stored.toString();
-
-      iframe.style.width = "100%";
-      iframe.style.height = "1305px";
-      iframe.style.border = "none";
-      iframe.style.borderRadius = "3px";
-      iframe.id = "inline-dNKGsbO90msgBMgJWxKQ";
-      iframe.setAttribute("data-layout", "{'id':'INLINE'}");
-      iframe.setAttribute("data-trigger-type", "alwaysShow");
-      iframe.setAttribute("data-trigger-value", "");
-      iframe.setAttribute("data-activation-type", "alwaysActivated");
-      iframe.setAttribute("data-activation-value", "");
-      iframe.setAttribute("data-deactivation-type", "neverDeactivate");
-      iframe.setAttribute("data-deactivation-value", "");
-      iframe.setAttribute("data-form-name", "PPC / Website 2");
-      iframe.setAttribute("data-height", "1305");
-      iframe.setAttribute("data-layout-iframe-id", "inline-dNKGsbO90msgBMgJWxKQ");
-      iframe.setAttribute("data-form-id", "dNKGsbO90msgBMgJWxKQ");
-      iframe.setAttribute("title", "PPC / Website 2");
-
-      document.getElementById("ghl-form-ppc2").appendChild(iframe);
-    })();
-    </script>
+      <button type="submit" class="offer-submit-btn">Continue</button>
+    </form>
 
     <div class="trust-checks">
       <div>✔ We will not share your information or send SPAM</div>
@@ -176,22 +104,6 @@ src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
     © <span id="year"></span> The Summit Group. All Rights Reserved.
   </div>
 </footer>
-
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  const params = new URLSearchParams(window.location.search);
-  const address = params.get("address");
-
-  if (address) {
-    const decoded = decodeURIComponent(address);
-    document.getElementById("addressField").value = decoded;
-    document.getElementById("displayAddress").textContent = decoded;
-  }
-</script>
-
-<script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
-<script src="script.js"></script>
 
 </body>
 </html>
