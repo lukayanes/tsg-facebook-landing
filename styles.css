@@ -1089,7 +1089,14 @@ html {
 
 /* Disable text selection everywhere */
 body {
-  user-select: none;
+  user-select: auto;
+}
+
+input,
+textarea,
+button,
+select {
+  user-select: auto;
 }
 
 /* BUT allow selection inside form fields */
