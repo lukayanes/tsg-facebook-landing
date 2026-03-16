@@ -79,7 +79,7 @@ location.replace(`https://${location.hostname}${location.pathname}${location.sea
 HERO
 ========================= -->
 <section class="hero" id="top">
-  <div class="overlay"></div>
+  <div class="overlay" style="pointer-events:none;"></div>
 
   <div class="container hero-inner">
     <h4>No Repairs, No Showings, No Cleaning, No Stress</h4>
@@ -94,17 +94,22 @@ HERO
       we will find a solution that works for you.
     </p>
 
-    <!-- 🔥 ADDRESS BAR NOW INSIDE HERO -->
-    <div class="floating-offer" id="floatingOffer">
+    <div class="floating-offer" id="floatingOffer" style="position:relative; z-index:9999;">
       <form id="addressForm" class="floating-offer-form">
-        <input id="autocomplete" name="address" type="text" placeholder="Home Address Here..." required />
+        <input
+          id="autocomplete"
+          name="address"
+          type="text"
+          placeholder="Home Address Here..."
+          required
+          style="position:relative; z-index:10000; pointer-events:auto;"
+        />
         <button id="offerBtn" type="submit">Get Offer!</button>
       </form>
     </div>
 
   </div>
 </section>
-
 
 
  
