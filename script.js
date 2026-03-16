@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
   if (!contactForm) return;
 
-  contactForm.addEventListener("submit", function (e) {
+  contactForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const firstName = document.getElementById("firstName")?.value.trim() || "";
@@ -153,20 +153,33 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("email", email);
     localStorage.setItem("phone", phone);
 
-    const params = new URLSearchParams(window.location.search);
+    try {
+      const recaptchaToken = await getRecaptchaToken();
 
-    params.set("address", address);
-    params.set("city", city);
-    params.set("state", state);
-    params.set("postal_code", postal);
-    params.set("country", country);
+      const tokenField = document.getElementById("recaptchaToken");
+      if (tokenField) {
+        tokenField.value = recaptchaToken;
+      }
 
-    params.set("first_name", firstName);
-    params.set("last_name", lastName);
-    params.set("email", email);
-    params.set("phone", phone);
+      const params = new URLSearchParams(window.location.search);
 
-    window.location.href = "get-your-offer-send.html?" + params.toString();
+      params.set("address", address);
+      params.set("city", city);
+      params.set("state", state);
+      params.set("postal_code", postal);
+      params.set("country", country);
+
+      params.set("first_name", firstName);
+      params.set("last_name", lastName);
+      params.set("email", email);
+      params.set("phone", phone);
+      params.set("recaptcha_token", recaptchaToken);
+
+      window.location.href = "get-your-offer-send.html?" + params.toString();
+    } catch (err) {
+      console.error("reCAPTCHA failed:", err);
+      alert("Security check failed. Please try again.");
+    }
   });
 });
 
