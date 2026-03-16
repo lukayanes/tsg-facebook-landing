@@ -1530,3 +1530,15 @@ CHECKBOX FIX
     font-size:13px;
   }
 }
+
+.compact-trust-checks {
+  margin-top: 18px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #374151;
+  text-align: center;
+}
+
+.compact-trust-checks div {
+  margin-bottom: 6px;
+}
