@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
     params.set("email", email);
     params.set("phone", phone);
 
-    window.location.href = "get-your-offer-send.html?" + params.toString();
+    window.location.href = "get-your-offer.html?" + params.toString();
   });
 });
 
