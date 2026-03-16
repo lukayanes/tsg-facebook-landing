@@ -395,9 +395,8 @@ document.addEventListener("DOMContentLoaded", function () {
   countryField.value = country;
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
-  const floatingOffer = document.querySelector(".floating-offer");
+  const floatingOffer = document.getElementById("floatingOffer");
   const header = document.querySelector(".top-nav");
 
   if (!floatingOffer || !header) return;
@@ -407,8 +406,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (window.scrollY > triggerPoint) {
       floatingOffer.classList.add("sticky");
+      header.classList.add("hidden");
     } else {
       floatingOffer.classList.remove("sticky");
+      header.classList.remove("hidden");
     }
   }
 
@@ -416,3 +417,4 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", handleStickyOffer);
   window.addEventListener("resize", handleStickyOffer);
 });
+
