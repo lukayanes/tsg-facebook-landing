@@ -6,13 +6,11 @@
 <title>Complete Your Offer | The Summit Group</title>
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="assets/throne logo.png">
-
 <script>
 if (location.protocol !== 'https:') {
   location.replace(`https://${location.host}${location.pathname}${location.search}`);
 }
 </script>
-
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -26,28 +24,30 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1490549599338491');
 fbq('track', 'PageView');
 </script>
-<noscript>
-  <img height="1" width="1" style="display:none"
-       src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1" />
-</noscript>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
+/></noscript>
 <!-- End Meta Pixel Code -->
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MN2938KBVH"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-MN2938KBVH');
-</script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-MN2938KBVH');
+</script>
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G"></script>
 </head>
 
 <body>
 
+<!-- =========================
+HEADER (MATCH INDEX)
+========================= -->
 <header class="top-nav">
   <div class="container nav-inner">
+    
     <a href="index.html">
       <img src="assets/throne logo.png" class="logo" alt="The Summit Group">
     </a>
@@ -60,17 +60,21 @@ gtag('config', 'G-MN2938KBVH');
   </div>
 </header>
 
+<!-- Slide Menu -->
 <div id="sideMenu" class="side-menu">
   <div class="side-menu-inner">
     <div class="close-btn" onclick="closeMenu()">✕</div>
     <a href="index.html">Home</a>
     <a href="get-offer.html">Get Offer</a>
-    <a href="about.html">About Us</a>
+    <a href="about.html">About-Us</a>
   </div>
 </div>
 
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
+<!-- =========================
+OFFER COMPLETION SECTION
+========================= -->
 <section class="section light">
   <div class="container narrow center">
 
@@ -82,24 +86,34 @@ gtag('config', 'G-MN2938KBVH');
 
     <h3 id="displayAddress" class="address-highlight"></h3>
 
+    <!-- =========================
+    INLINE CRM FORM
+    ========================== -->
     <form id="contactForm" class="lead-form">
+
+      <!-- Hidden Address Field -->
       <input type="hidden" id="addressField" name="address">
-      <input type="hidden" name="recaptcha_token" id="recaptchaToken">
 
       <div class="two-col">
         <input id="firstName" name="first_name" placeholder="First Name" required>
         <input id="lastName" name="last_name" placeholder="Last Name" required>
       </div>
 
-      <input id="email" name="email" type="email" placeholder="Email Address" required>
-      <input id="phone" name="phone" type="tel" placeholder="Phone Number" inputmode="tel">
+      <input id="email" name="email" placeholder="Email Address" required>
+
+      <input id="phone" name="phone" placeholder="Phone Number">
+
+      <input type="hidden" name="recaptcha_token" id="recaptchaToken">
 
       <label class="consent">
         <input type="checkbox" required>
-        By checking this box, I consent to receive transactional messages related to my account, offers, or services I have requested from Summit Group Acquisitions LLC. These messages may include appointment reminders, offer updates, and account notifications among others. Message frequency may vary. Message &amp; Data rates may apply. Reply HELP for help or STOP to opt-out.
+
+        By checking this box, I consent to receive transactional messages related to my account, offers, or services I have requested from Summit Group Acquisitions LLC. These messages may include appointment reminders, offer updates, and account notifications among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
       </label>
 
-      <button type="submit" class="large-btn">Get My Offer</button>
+      <button type="submit" class="large-btn">
+        Get My Offer
+      </button>
 
       <div class="trust-text">
         ✓ We will not share your information or send SPAM
@@ -110,15 +124,20 @@ gtag('config', 'G-MN2938KBVH');
           ✕ If you enter an incorrect number, we cannot send an offer
         </span>
       </div>
+
     </form>
 
   </div>
 </section>
 
+<!-- =========================
+FOOTER (MATCH INDEX)
+========================= -->
 <footer class="footer">
   <div class="container footer-grid">
+
     <div>
-      <a href="index.html">
+      <a href="#top">
         <img src="assets/throne logo.png" class="footer-logo" alt="The Summit Group">
       </a>
     </div>
@@ -132,8 +151,11 @@ gtag('config', 'G-MN2938KBVH');
     <div>
       <h4>Contact Us</h4>
       <a href="tel:8139249450">(813) 924-9450</a>
-      <a href="mailto:info@summitgroupacq.com">info@summitgroupacq.com</a>
+      <a href="mailto:info@summitgroupacq.com">
+        info@summitgroupacq.com
+      </a>
     </div>
+
   </div>
 
   <div class="footer-bottom">
@@ -141,32 +163,51 @@ gtag('config', 'G-MN2938KBVH');
   </div>
 </footer>
 
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const params = new URLSearchParams(window.location.search);
+  const address = params.get("address");
+
+  if (address) {
+    const decoded = decodeURIComponent(address);
+    document.getElementById("addressField").value = decoded;
+    document.getElementById("displayAddress").textContent = decoded;
+  }
+</script>
+
+<script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
 <script src="script.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
   const phoneInput = document.getElementById("phone");
   if (!phoneInput) return;
 
   phoneInput.addEventListener("input", function (e) {
+
     let numbers = e.target.value.replace(/\D/g, "");
 
     if (numbers.length > 10) {
-      numbers = numbers.substring(0, 10);
+      numbers = numbers.substring(0,10);
     }
 
     let formatted = numbers;
 
     if (numbers.length > 6) {
       formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3,6)}-${numbers.slice(6)}`;
-    } else if (numbers.length > 3) {
+    }
+    else if (numbers.length > 3) {
       formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3)}`;
     }
 
     e.target.value = formatted;
+
   });
+
 });
 </script>
-
+  
 </body>
 </html>
