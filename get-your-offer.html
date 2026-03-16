@@ -11,6 +11,7 @@ if (location.protocol !== 'https:') {
   location.replace(`https://${location.host}${location.pathname}${location.search}`);
 }
 </script>
+
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -28,26 +29,21 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1490549599338491&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MN2938KBVH"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-MN2938KBVH');
 </script>
-<script src="https://www.google.com/recaptcha/enterprise.js?render=6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G"></script>
 </head>
 
 <body>
 
-<!-- =========================
-HEADER (MATCH INDEX)
-========================= -->
 <header class="top-nav">
   <div class="container nav-inner">
-    
     <a href="index.html">
       <img src="assets/throne logo.png" class="logo" alt="The Summit Group">
     </a>
@@ -60,7 +56,6 @@ HEADER (MATCH INDEX)
   </div>
 </header>
 
-<!-- Slide Menu -->
 <div id="sideMenu" class="side-menu">
   <div class="side-menu-inner">
     <div class="close-btn" onclick="closeMenu()">✕</div>
@@ -72,70 +67,92 @@ HEADER (MATCH INDEX)
 
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
-<!-- =========================
-OFFER COMPLETION SECTION
-========================= -->
 <section class="section light">
   <div class="container narrow center">
 
-    <h1>You're Almost There</h1>
+    <h1>Excellent! Help Us Learn More About Your Property and Situation...</h1>
 
     <p class="lead-text">
-      Enter your contact details below and we’ll send your cash offer for:
+      Your two minutes will help us make our offer more quickly and more accurately. The more information we have, the better offer we can confidently make for your property:
     </p>
 
     <h3 id="displayAddress" class="address-highlight"></h3>
 
-    <!-- =========================
-    INLINE CRM FORM
-    ========================== -->
-    <form id="contactForm" class="lead-form">
+    <input type="hidden" id="addressField" name="address">
 
-      <!-- Hidden Address Field -->
-      <input type="hidden" id="addressField" name="address">
+    <div class="form-embed" id="ghl-form-ppc2"></div>
 
-      <div class="two-col">
-        <input id="firstName" name="first_name" placeholder="First Name" required>
-        <input id="lastName" name="last_name" placeholder="Last Name" required>
-      </div>
+    <script>
+    (function () {
+      const stored = new URLSearchParams(window.location.search);
 
-      <input id="email" name="email" placeholder="Email Address" required>
+      stored.set("address1", localStorage.getItem("addressStreet") || "");
+      stored.set("city", localStorage.getItem("addressCity") || "");
+      stored.set("state", localStorage.getItem("addressState") || "");
+      stored.set("postal_code", localStorage.getItem("addressPostal") || "");
+      stored.set("country", localStorage.getItem("addressCountry") || "");
 
-      <input id="phone" name="phone" placeholder="Phone Number">
+      stored.set("first_name", localStorage.getItem("firstName") || "");
+      stored.set("last_name", localStorage.getItem("lastName") || "");
+      stored.set("email", localStorage.getItem("email") || "");
+      stored.set("phone", localStorage.getItem("phone") || "");
 
-      <input type="hidden" name="recaptcha_token" id="recaptchaToken">
+      [
+        "fbclid",
+        "fbc",
+        "fbp",
+        "utm_source",
+        "utm_campaign",
+        "utm_term",
+        "utm_device",
+        "utm_adgroup"
+      ].forEach(function (p) {
+        const value = localStorage.getItem(p);
+        if (value) {
+          stored.set(p, value);
+        }
+      });
 
-      <label class="consent">
-        <input type="checkbox" required>
+      stored.set("lead_source", "Facebook");
 
-        By checking this box, I consent to receive transactional messages related to my account, offers, or services I have requested from Summit Group Acquisitions LLC. These messages may include appointment reminders, offer updates, and account notifications among others. Message frequency may vary. Message & Data rates may apply. Reply HELP for help or STOP to opt-out.
-      </label>
+      const iframe = document.createElement("iframe");
+      iframe.src =
+        "https://links.summitflowcrm.com/widget/form/dNKGsbO90msgBMgJWxKQ?" +
+        stored.toString();
 
-      <button type="submit" class="large-btn">
-        Get My Offer
-      </button>
+      iframe.style.width = "100%";
+      iframe.style.height = "1305px";
+      iframe.style.border = "none";
+      iframe.style.borderRadius = "3px";
+      iframe.id = "inline-dNKGsbO90msgBMgJWxKQ";
+      iframe.setAttribute("data-layout", "{'id':'INLINE'}");
+      iframe.setAttribute("data-trigger-type", "alwaysShow");
+      iframe.setAttribute("data-trigger-value", "");
+      iframe.setAttribute("data-activation-type", "alwaysActivated");
+      iframe.setAttribute("data-activation-value", "");
+      iframe.setAttribute("data-deactivation-type", "neverDeactivate");
+      iframe.setAttribute("data-deactivation-value", "");
+      iframe.setAttribute("data-form-name", "PPC / Website 2");
+      iframe.setAttribute("data-height", "1305");
+      iframe.setAttribute("data-layout-iframe-id", "inline-dNKGsbO90msgBMgJWxKQ");
+      iframe.setAttribute("data-form-id", "dNKGsbO90msgBMgJWxKQ");
+      iframe.setAttribute("title", "PPC / Website 2");
 
-      <div class="trust-text">
-        ✓ We will not share your information or send SPAM
-        <br>
-        ✓ We use your phone and email for further contact and verification
-        <br>
-        <span class="warning-text">
-          ✕ If you enter an incorrect number, we cannot send an offer
-        </span>
-      </div>
+      document.getElementById("ghl-form-ppc2").appendChild(iframe);
+    })();
+    </script>
 
-    </form>
+    <div class="trust-checks">
+      <div>✔ We will not share your information or send SPAM</div>
+      <div>✔ We use your phone and email for further contact and verification</div>
+      <div class="warning-text">✔ If you enter an incorrect number, we cannot send an offer</div>
+    </div>
 
   </div>
 </section>
 
-<!-- =========================
-FOOTER (MATCH INDEX)
-========================= -->
 <footer class="footer">
   <div class="container footer-grid">
-
     <div>
       <a href="#top">
         <img src="assets/throne logo.png" class="footer-logo" alt="The Summit Group">
@@ -151,11 +168,8 @@ FOOTER (MATCH INDEX)
     <div>
       <h4>Contact Us</h4>
       <a href="tel:8139249450">(813) 924-9450</a>
-      <a href="mailto:info@summitgroupacq.com">
-        info@summitgroupacq.com
-      </a>
+      <a href="mailto:info@summitgroupacq.com">info@summitgroupacq.com</a>
     </div>
-
   </div>
 
   <div class="footer-bottom">
@@ -179,35 +193,5 @@ FOOTER (MATCH INDEX)
 <script src="https://links.summitflowcrm.com/js/form_embed.js"></script>
 <script src="script.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const phoneInput = document.getElementById("phone");
-  if (!phoneInput) return;
-
-  phoneInput.addEventListener("input", function (e) {
-
-    let numbers = e.target.value.replace(/\D/g, "");
-
-    if (numbers.length > 10) {
-      numbers = numbers.substring(0,10);
-    }
-
-    let formatted = numbers;
-
-    if (numbers.length > 6) {
-      formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3,6)}-${numbers.slice(6)}`;
-    }
-    else if (numbers.length > 3) {
-      formatted = `(${numbers.slice(0,3)}) ${numbers.slice(3)}`;
-    }
-
-    e.target.value = formatted;
-
-  });
-
-});
-</script>
-  
 </body>
 </html>
