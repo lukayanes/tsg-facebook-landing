@@ -334,16 +334,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
-  const address = params.get("address") || localStorage.getItem("address") || "";
-  if (!address) return;
+  const addressFromUrl = params.get("address") || "";
 
   const field =
     document.querySelector('[name="address"]') ||
     document.getElementById("offerAddress") ||
     document.getElementById("autocomplete");
 
-  if (field) {
-    field.value = address;
+  if (!field) return;
+
+  if (field.id === "autocomplete") {
+    field.value = "";
+    localStorage.removeItem("address");
+    localStorage.removeItem("addressStreet");
+    localStorage.removeItem("addressCity");
+    localStorage.removeItem("addressState");
+    localStorage.removeItem("addressPostal");
+    localStorage.removeItem("addressCountry");
+    selectedAddress = "";
+    return;
+  }
+
+  if (addressFromUrl) {
+    field.value = addressFromUrl;
   }
 });
 
