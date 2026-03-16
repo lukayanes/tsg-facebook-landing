@@ -1542,3 +1542,32 @@ CHECKBOX FIX
   border-radius: 16px;
   box-shadow: 0 18px 40px rgba(0,0,0,0.18);
 }
+
+
+/* ===============================
+   REMOVE BLINKING TEXT CURSOR
+=============================== */
+
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+span,
+div,
+a,
+li,
+strong,
+em,
+label,
+button {
+  -webkit-user-select: none;
+  user-select: none;
+  caret-color: transparent;
+}
+
+input,
+textarea,
+select {
+  -webkit-user-select: text;
+  user-select: text;
+  caret-color: auto;
+}
