@@ -159,6 +159,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const addressForm = document.getElementById("addressForm");
   if (!addressForm) return;
 
+  const homeInput = document.getElementById("autocomplete");
+  if (homeInput) {
+    homeInput.value = "";
+  }
+  clearStoredAddress();
+
   addressForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -524,6 +530,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const stored = getStoredAddress();
   const address = params.get("address") || stored.address || "";
   if (!address) return;
+
+  const path = window.location.pathname.toLowerCase();
+  const isHomePage =
+    path.endsWith("/index.html") ||
+    path === "/" ||
+    path.endsWith("/");
+
+  if (isHomePage) return;
 
   const field =
     document.querySelector('[name="address"]') ||
