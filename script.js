@@ -365,3 +365,10 @@ document.addEventListener("DOMContentLoaded", function () {
     field.value = address;
   }
 });
+
+
+async function getRecaptchaToken() {
+  return await grecaptcha.enterprise.execute("6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G", {
+    action: "submit_lead"
+  });
+}
