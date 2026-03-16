@@ -142,12 +142,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = document.getElementById("email")?.value.trim() || "";
     const phone = document.getElementById("phone")?.value.trim() || "";
 
+    const address = localStorage.getItem("address") || "";
+    const city = localStorage.getItem("addressCity") || "";
+    const state = localStorage.getItem("addressState") || "";
+    const postal = localStorage.getItem("addressPostal") || "";
+    const country = localStorage.getItem("addressCountry") || "";
+
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
     localStorage.setItem("email", email);
     localStorage.setItem("phone", phone);
 
     const params = new URLSearchParams(window.location.search);
+
+    params.set("address", address);
+    params.set("city", city);
+    params.set("state", state);
+    params.set("postal_code", postal);
+    params.set("country", country);
+
     params.set("first_name", firstName);
     params.set("last_name", lastName);
     params.set("email", email);
