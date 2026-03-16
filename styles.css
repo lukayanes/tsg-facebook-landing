@@ -1542,3 +1542,29 @@ CHECKBOX FIX
 .compact-trust-checks div {
   margin-bottom: 6px;
 }
+
+.floating-offer {
+  margin-top: 35px;
+  width: 100%;
+  transition: all 0.35s ease;
+}
+
+.floating-offer.sticky {
+  position: fixed;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  z-index: 2000;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.floating-offer.sticky .floating-offer-form {
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+}
