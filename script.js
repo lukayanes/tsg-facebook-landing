@@ -172,8 +172,8 @@ document.addEventListener("DOMContentLoaded", function () {
       params.set("email", email);
       params.set("phone", phone);
 
-      params.set("recaptcha_token2", recaptchaToken);
-
+      params.set("recaptcha_token", recaptchaToken);
+      
       window.location.href = "get-your-offer-send.html?" + params.toString();
     } catch (err) {
       console.error("reCAPTCHA failed:", err);
