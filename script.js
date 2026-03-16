@@ -398,13 +398,14 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const floatingOffer = document.getElementById("floatingOffer");
   const header = document.querySelector(".top-nav");
+  const hero = document.querySelector(".hero");
 
-  if (!floatingOffer || !header) return;
+  if (!floatingOffer || !header || !hero) return;
 
   function handleStickyOffer() {
-    const triggerPoint = header.offsetHeight;
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
 
-    if (window.scrollY > triggerPoint) {
+    if (window.scrollY > heroBottom) {
       floatingOffer.classList.add("sticky");
       header.classList.add("hidden");
     } else {
@@ -417,4 +418,3 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", handleStickyOffer);
   window.addEventListener("resize", handleStickyOffer);
 });
-
