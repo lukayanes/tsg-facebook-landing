@@ -716,33 +716,6 @@ SIDE MENU — FIXED BELOW NAV
    FLOATING OFFER
 ================================ */
 
-.floating-offer {
-  margin-top: 35px; /* sits naturally under hero paragraph */
-  transition: all 0.35s ease;
-}
-
-/* ===============================
-   STICKY MODE (MATCH SUMMIT)
-================================ */
-
-.floating-offer.sticky {
-  position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);  /* 🔥 true horizontal centering */
-  width: 100%;
-  max-width: 1100px;            /* Summit width */
-  z-index: 2000;
-  background: transparent;
-  padding: 0;
-}
-
-/* Make the form fill that width */
-.floating-offer.sticky .floating-offer-form {
-  width: 100%;
-  border-radius: 16px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
-}
 
 
 /* Hide nav when sticky */
@@ -754,6 +727,7 @@ SIDE MENU — FIXED BELOW NAV
 .floating-offer-form {
   display: flex;
   align-items: center;
+  width: 100%;
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 16px 40px rgba(0,0,0,0.18);
