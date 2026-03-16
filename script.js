@@ -157,9 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const recaptchaToken = await getRecaptchaToken();
 
       const tokenField = document.getElementById("recaptchaToken");
-      if (tokenField) {
-        tokenField.value = recaptchaToken;
-      }
+      if (tokenField) tokenField.value = recaptchaToken;
 
       const params = new URLSearchParams(window.location.search);
 
