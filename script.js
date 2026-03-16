@@ -293,13 +293,12 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       let recaptchaToken = "";
 
-      if (
-        window.grecaptcha &&
-        grecaptcha.enterprise &&
-        typeof grecaptcha.enterprise.execute === "function"
-      ) {
-        recaptchaToken = await getRecaptchaToken();
-      }
+    try {
+      recaptchaToken = await getRecaptchaToken();
+    } catch (err) {
+      console.error("reCAPTCHA execute error:", err);
+      recaptchaToken = "";
+    }
 
       const tokenField = document.getElementById("recaptchaToken");
       if (tokenField) tokenField.value = recaptchaToken;
