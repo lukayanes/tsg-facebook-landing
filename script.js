@@ -83,15 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
   addressForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const input = document.getElementById("autocomplete");
-    const typedAddress = input ? input.value.trim() : "";
-    const finalAddress = selectedAddress || typedAddress;
-
-    if (!finalAddress) {
-      alert("Please enter your property address.");
+    if (!selectedAddress) {
+      alert("Please select your property address from the dropdown.");
       return;
     }
 
+    const finalAddress = selectedAddress;
     localStorage.setItem("address", finalAddress);
 
     const btn = document.getElementById("offerBtn");
@@ -383,7 +380,6 @@ document.addEventListener("DOMContentLoaded", function () {
     field.value = address;
   }
 });
-
 
 async function getRecaptchaToken() {
   return await grecaptcha.enterprise.execute("6LdBUYwsAAAAABtvWLcy5v8-ZT5-qvr2Q6x8DV0G", {
