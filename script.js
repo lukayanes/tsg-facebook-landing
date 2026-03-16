@@ -205,10 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/* ===============================
-HAMBURGER DROPDOWN
-================================ */
-
 function toggleMenu() {
   const menu = document.getElementById("dropdownMenu");
   if (menu) menu.classList.toggle("show");
@@ -223,10 +219,6 @@ function closeMenu() {
   document.getElementById("sideMenu")?.classList.remove("active");
   document.getElementById("menuOverlay")?.classList.remove("active");
 }
-
-// ===============================
-// HERO ADDRESS BAR NAV REPLACEMENT
-// ===============================
 
 document.addEventListener("DOMContentLoaded", function () {
   const hero = document.querySelector(".hero");
@@ -252,10 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
   handleScroll();
 });
 
-// ===============================
-// AUTO-DETECT USER STATE
-// ===============================
-
 document.addEventListener("DOMContentLoaded", function () {
   const stateEl = document.getElementById("userState");
   if (!stateEl) return;
@@ -270,7 +258,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch(() => {});
 });
 
-// FAQ Accordion
 document.addEventListener("DOMContentLoaded", function () {
   const items = document.querySelectorAll(".faq-item");
 
@@ -283,10 +270,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
-/* =========================================
-CAPTURE META CLICK DATA + UTMs
-========================================= */
 
 (function () {
   const params = new URLSearchParams(window.location.search);
@@ -320,10 +303,6 @@ CAPTURE META CLICK DATA + UTMs
   });
 })();
 
-/* =========================================
-POPULATE META / UTM FIELDS INTO FORM
-========================================= */
-
 (function () {
   const fieldMap = {
     fbclid: "fbclid",
@@ -352,10 +331,6 @@ POPULATE META / UTM FIELDS INTO FORM
   setTimeout(populate, 1500);
   setTimeout(populate, 3000);
 })();
-
-/* =========================================
-POPULATE ADDRESS INTO FORM
-========================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
