@@ -394,3 +394,25 @@ document.addEventListener("DOMContentLoaded", function () {
   postalField.value = postal;
   countryField.value = country;
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const floatingOffer = document.querySelector(".floating-offer");
+  const header = document.querySelector(".top-nav");
+
+  if (!floatingOffer || !header) return;
+
+  function handleStickyOffer() {
+    const triggerPoint = header.offsetHeight;
+
+    if (window.scrollY > triggerPoint) {
+      floatingOffer.classList.add("sticky");
+    } else {
+      floatingOffer.classList.remove("sticky");
+    }
+  }
+
+  handleStickyOffer();
+  window.addEventListener("scroll", handleStickyOffer);
+  window.addEventListener("resize", handleStickyOffer);
+});
