@@ -83,12 +83,23 @@ document.addEventListener("DOMContentLoaded", function () {
   addressForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    if (!selectedAddress) {
-      alert("Please select your property address from the dropdown.");
+    const input = document.getElementById("autocomplete");
+    const typedAddress = input ? input.value.trim() : "";
+    const finalAddress = selectedAddress || typedAddress;
+
+    if (!finalAddress) {
+      alert("Please enter your property address.");
       return;
     }
 
-    const finalAddress = selectedAddress;
+    if (!selectedAddress && typedAddress) {
+      localStorage.removeItem("addressStreet");
+      localStorage.removeItem("addressCity");
+      localStorage.removeItem("addressState");
+      localStorage.removeItem("addressPostal");
+      localStorage.removeItem("addressCountry");
+    }
+
     localStorage.setItem("address", finalAddress);
 
     const btn = document.getElementById("offerBtn");
