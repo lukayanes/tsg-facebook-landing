@@ -142,7 +142,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const email = document.getElementById("email")?.value.trim() || "";
     const phone = document.getElementById("phone")?.value.trim() || "";
 
-    const address = localStorage.getItem("address") || "";
+    const addressFieldValue = document.getElementById("addressField")?.value.trim() || "";
+    const address =
+      addressFieldValue ||
+      new URLSearchParams(window.location.search).get("address") ||
+      localStorage.getItem("address") ||
+      "";
+
     const city = localStorage.getItem("addressCity") || "";
     const state = localStorage.getItem("addressState") || "";
     const postal = localStorage.getItem("addressPostal") || "";
@@ -173,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
       params.set("phone", phone);
 
       params.set("recaptcha_token", recaptchaToken);
-      
+
       window.location.href = "get-your-offer-send.html?" + params.toString();
     } catch (err) {
       console.error("reCAPTCHA failed:", err);
